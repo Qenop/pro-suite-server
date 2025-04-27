@@ -1,13 +1,15 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import MeterReading from '../models/MeterReading';
 
 const router = express.Router();
 
-router.post('/', async (req, res) => {
+// Define the route handler as async and return Promise<void> explicitly
+router.post('/', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const { unitId, reading, timestamp } = req.body;
 
   if (!unitId || reading === undefined) {
-    return res.status(400).json({ error: "unitId and reading are required." });
+    res.status(400).json({ error: "unitId and reading are required." });
+    return; // Explicit return to end the function early
   }
 
   try {
@@ -21,7 +23,7 @@ router.post('/', async (req, res) => {
     res.status(201).json(newReading);
   } catch (err) {
     console.error("Error saving reading:", err);
-    res.status(500).json({ error: "Failed to save reading." });
+    next(err); // Pass the error to Express error handler
   }
 });
 
