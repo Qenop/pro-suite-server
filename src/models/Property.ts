@@ -34,8 +34,8 @@ export interface IProperty extends Document {
     accountNumber: { type: String, required: true },
   },*/
   
-  landlord: { name: string; phone: string };
-  caretaker: { name: string; phone: string };
+  landlord: { name: string; phone: string; email:string };
+  caretaker: { name: string; phone: string; email:string};
   units: IUnit[];
 }
 
